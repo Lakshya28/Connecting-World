@@ -1,14 +1,14 @@
 package com.example.connectingworld.adapter;
 
+import android.content.Context;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import android.content.Context;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.connectingworld.R;
 import com.example.connectingworld.fragment.ArtandDesignFragment;
 import com.example.connectingworld.fragment.BusinessFragment;
-import com.example.connectingworld.fragment.CultureFragment;
 import com.example.connectingworld.fragment.EnvironmentFragment;
 import com.example.connectingworld.fragment.FashionFragment;
 import com.example.connectingworld.fragment.FoodFragment;
@@ -21,30 +21,15 @@ import com.example.connectingworld.fragment.TravelFragment;
 import com.example.connectingworld.fragment.WorldFragment;
 import com.example.connectingworld.utils.Constants;
 
-/**
- * Provides the appropriate {@link Fragment} for a view pager.
- */
-
 public class CategoryFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    /** Context of the app */
     private Context mContext;
 
-    /**
-     * Create a new {@link CategoryFragmentPagerAdapter} object.
-     *
-     * @param context is the context of the app
-     * @param fm is the fragment manager that will keep each fragment's state in the adapter
-     * across swipes.
-     */
     public CategoryFragmentPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
 
-    /**
-     * Return the {@link Fragment} that should be displayed for the given page number.
-     */
     @Override
     public Fragment getItem(int position) {
         switch (position) {
@@ -68,28 +53,18 @@ public class CategoryFragmentPagerAdapter extends FragmentPagerAdapter {
                 return new FashionFragment();
             case Constants.BUSINESS:
                 return new BusinessFragment();
-            case Constants.CULTURE:
-                return new CultureFragment();
             case Constants.FOOD:
                 return new FoodFragment();
-            case Constants.ARTANDDESIGN:
-                return new ArtandDesignFragment();
             default:
-                return null;
+                return new ArtandDesignFragment();
         }
     }
 
-    /**
-     * Return the total number of pages.
-     */
     @Override
     public int getCount() {
-        return 13;
+        return 12;
     }
 
-    /**
-     * Return page title of the tap
-     */
     @Override
     public CharSequence getPageTitle(int position) {
         int titleResId;
@@ -102,6 +77,12 @@ public class CategoryFragmentPagerAdapter extends FragmentPagerAdapter {
                 break;
             case Constants.SCIENCE:
                 titleResId = R.string.ic_title_science;
+                break;
+            case Constants.TECHNOLOGY:
+                titleResId = R.string.ic_title_technology;
+                break;
+            case Constants.TRAVEL:
+                titleResId = R.string.ic_title_travel;
                 break;
             case Constants.SPORT:
                 titleResId = R.string.ic_title_sport;
@@ -117,9 +98,6 @@ public class CategoryFragmentPagerAdapter extends FragmentPagerAdapter {
                 break;
             case Constants.BUSINESS:
                 titleResId = R.string.ic_title_business;
-                break;
-            case Constants.CULTURE:
-                titleResId = R.string.culture;
                 break;
             case Constants.FOOD:
                 titleResId = R.string.ic_title_food;

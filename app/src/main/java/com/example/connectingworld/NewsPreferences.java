@@ -69,11 +69,6 @@ public final class NewsPreferences {
         return uriBuilder;
     }
 
-    /**
-     * Returns String Url for query
-     * @param context Context used to access getPreferredUri method
-     * @param section News section
-     */
     public static String getPreferredUrl(Context context, String section) {
         Uri.Builder uriBuilder = getPreferredUri(context);
         return uriBuilder.appendQueryParameter(SECTION_PARAM, section).toString();

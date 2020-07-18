@@ -3,7 +3,6 @@ package com.example.connectingworld.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -48,7 +46,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
     @Override
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
         final Result result = newsData.get(position);
-        String title= result.getWebTitle().replaceAll("â\u0080", "'");
+        String title = result.getWebTitle().replaceAll("â\u0080", "'");
         holder.articleTitle.setText(title);
         holder.articleTopic.setText(result.getSectionName());
         holder.articleDate.setText(getTimeDifference(formatDate(result.getWebPublicationDate())));
