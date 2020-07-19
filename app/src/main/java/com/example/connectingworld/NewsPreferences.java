@@ -15,6 +15,7 @@ import static com.example.connectingworld.utils.Constants.FORMAT_PARAM;
 import static com.example.connectingworld.utils.Constants.FROM_DATE_PARAM;
 import static com.example.connectingworld.utils.Constants.ORDER_BY_PARAM;
 import static com.example.connectingworld.utils.Constants.ORDER_DATE_PARAM;
+import static com.example.connectingworld.utils.Constants.PAGE_NO;
 import static com.example.connectingworld.utils.Constants.PAGE_SIZE_PARAM;
 import static com.example.connectingworld.utils.Constants.QUERY_PARAM;
 import static com.example.connectingworld.utils.Constants.SECTION_PARAM;
@@ -69,8 +70,9 @@ public final class NewsPreferences {
         return uriBuilder;
     }
 
-    public static String getPreferredUrl(Context context, String section) {
+    public static String getPreferredUrl(Context context, String section, int page) {
         Uri.Builder uriBuilder = getPreferredUri(context);
-        return uriBuilder.appendQueryParameter(SECTION_PARAM, section).toString();
+        if (!("").equals(section)) uriBuilder.appendQueryParameter(SECTION_PARAM, section);
+        return uriBuilder.appendQueryParameter(PAGE_NO, "" + page).toString();
     }
 }

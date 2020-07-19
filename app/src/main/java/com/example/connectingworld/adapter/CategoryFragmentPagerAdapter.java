@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.connectingworld.R;
 import com.example.connectingworld.fragment.ArtandDesignFragment;
@@ -21,7 +21,7 @@ import com.example.connectingworld.fragment.TravelFragment;
 import com.example.connectingworld.fragment.WorldFragment;
 import com.example.connectingworld.utils.Constants;
 
-public class CategoryFragmentPagerAdapter extends FragmentPagerAdapter {
+public class CategoryFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private Context mContext;
 

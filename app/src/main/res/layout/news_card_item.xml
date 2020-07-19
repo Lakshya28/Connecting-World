@@ -38,6 +38,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
+
+
         <TextView
             android:id="@+id/itemtitle"
             android:layout_width="match_parent"
@@ -51,5 +53,30 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:text="dddddddddddddddddddddddddddddddddddddddddddd"
             android:textSize="16sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/favourite"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_favourite" />
+
+            <ImageView
+                android:id="@+id/card_share"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_card_share" />
+
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

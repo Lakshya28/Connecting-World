@@ -3,6 +3,8 @@ package com.example.connectingworld.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +48,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
     @Override
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
         final Result result = newsData.get(position);
-        String title = result.getWebTitle().replaceAll("â\u0080", "'");
+        final Spanned title = Html.fromHtml(Html.fromHtml(result.getWebTitle()).toString());
+        //final String title = result.getWebTitle().replaceAll("â[\\u0000-\\u0080]", " ");
         holder.articleTitle.setText(title);
         holder.articleTopic.setText(result.getSectionName());
         holder.articleDate.setText(getTimeDifference(formatDate(result.getWebPublicationDate())));
@@ -56,11 +59,29 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
             holder.articleImage.setVisibility(View.VISIBLE);
             Glide.with(holder.articleImage.getContext()).load(result.getFields().getThumbnail()).into(holder.articleImage);
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.articleImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getWebUrl()));
                 context.startActivity(browserIntent);
+            }
+        });
+        holder.articleTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getWebUrl()));
+                context.startActivity(browserIntent);
+            }
+        });
+
+        holder.shareCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                        title + " : " + result.getWebUrl());
+                context.startActivity(Intent.createChooser(sharingIntent, context.getString(R.string.share_article)));
             }
         });
 
@@ -82,7 +103,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
     }
 
     public class viewholder extends RecyclerView.ViewHolder {
-        ImageView articleImage;
+        ImageView articleImage, shareCard, favouriteCard;
         TextView articleTitle, articleDate, articleTopic;
 
         public viewholder(@NonNull View itemView) {
@@ -91,6 +112,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
             articleTitle = itemView.findViewById(R.id.itemtitle);
             articleDate = itemView.findViewById(R.id.itempublishddate);
             articleTopic = itemView.findViewById(R.id.itemtopic);
+            shareCard = itemView.findViewById(R.id.card_share);
+            favouriteCard = itemView.findViewById(R.id.favourite);
         }
     }
 

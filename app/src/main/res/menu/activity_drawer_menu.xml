@@ -18,7 +18,7 @@
         <item
             android:id="@+id/nav_technology"
             android:icon="@drawable/ic_menu_technology"
-            android:title="@string/ic_title_environment" />
+            android:title="@string/ic_title_technology" />
         <item
             android:id="@+id/nav_travel"
             android:icon="@drawable/ic_menu_travel"
@@ -43,10 +43,6 @@
             android:id="@+id/nav_business"
             android:icon="@drawable/ic_menu_business"
             android:title="@string/ic_title_business" />
-        <item
-            android:id="@+id/nav_culture"
-            android:icon="@drawable/ic_menu_culture"
-            android:title="@string/ic_title_culture" />
         <item
             android:id="@+id/nav_food"
             android:icon="@drawable/ic_menu_food"

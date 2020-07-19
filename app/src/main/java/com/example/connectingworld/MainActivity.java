@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Set the pager adapter onto the view pager
         viewPager.setAdapter(pagerAdapter);
 
+
     }
 
     @Override
@@ -89,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             viewPager.setCurrentItem(Constants.FASHION);
         } else if (id == R.id.nav_business) {
             viewPager.setCurrentItem(Constants.BUSINESS);
-        } else if (id == R.id.nav_culture) {
-            viewPager.setCurrentItem(Constants.CULTURE);
         } else if (id == R.id.nav_food) {
             viewPager.setCurrentItem(Constants.FOOD);
         } else if (id == R.id.nav_artanddesign) {

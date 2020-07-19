@@ -1,14 +1,18 @@
 package com.example.connectingworld.fragment;
 
-import android.util.Log;
-
-import androidx.fragment.app.Fragment;
-
 public class FashionFragment extends BaseFragment {
-    public String getSectionName()
-    {
-        Log.d("LakFashionFragment","Called");
-        String section="fashion";
+    public Integer page = 1;
+
+    public Integer getPageNumber(boolean isRefreshed) {
+        if (isRefreshed) page = 1;
+        int temp = page;
+        page++;
+        return temp;
+    }
+
+    public String getSectionName() {
+        String section = "fashion";
         return section;
     }
+
 }

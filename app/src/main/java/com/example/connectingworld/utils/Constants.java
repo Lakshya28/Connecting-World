@@ -14,6 +14,7 @@ public class Constants {
     public static final String QUERY_PARAM = "q";
     public static final String ORDER_BY_PARAM = "order-by";
     public static final String PAGE_SIZE_PARAM = "page-size";
+    public static final String PAGE_NO = "page";
     public static final String ORDER_DATE_PARAM = "order-date";
     public static final String FROM_DATE_PARAM = "from-date";
     public static final String SHOW_FIELDS_PARAM = "show-fields";
@@ -37,8 +38,6 @@ public class Constants {
     public static final int SOCIETY = 7;
     public static final int FASHION = 8;
     public static final int BUSINESS = 9;
-    public static final int CULTURE = 10;
-    public static final int FOOD = 11;
-    public static final int ARTANDDESIGN = 12;
-
+    public static final int FOOD = 10;
+    public static final int ARTANDDESIGN = 11;
 }

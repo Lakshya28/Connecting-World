@@ -63,15 +63,16 @@ public class BaseFragment extends Fragment {
                     @Override
                     public void run() {
                         page = 1;
-                        articles.clear();
-                        getData();
+                        mAdapter.clearAll();
+                        getData(true);
                         mSwipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getActivity(), " Updated just now", Toast.LENGTH_SHORT).show();
 
                     }
-                }, 3000);
+                }, 1000);
             }
         });
+
 
         mLoadingIndicator = view.findViewById(R.id.loading_indicator);
 
@@ -80,7 +81,7 @@ public class BaseFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnScrollListener(OnScrollListener);
         requestQueue = Volley.newRequestQueue(getContext());
-        getData();
+        getData(false);
 
         return view;
     }
@@ -97,7 +98,7 @@ public class BaseFragment extends Fragment {
 
             if (isLastItemDisplaying(recyclerView)) {
                 mLoadingIndicator.setVisibility(View.VISIBLE);
-                getData();
+                getData(false);
             }
 
         }
@@ -113,10 +114,12 @@ public class BaseFragment extends Fragment {
         return false;
     }
 
-    private void getData() {
-        perfectURL = NewsPreferences.getPreferredUrl(getContext(), getSectionName());
+    private void getData(boolean isrefreshed) {
+        page = getPageNumber(isrefreshed);
+        Log.d("Lak" + getSectionName() + " ", "" + page);
+        perfectURL = NewsPreferences.getPreferredUrl(getContext(), getSectionName(), page);
         requestQueue.add(getDatafromapi());
-        page++;
+        //page++;
     }
 
     private StringRequest getDatafromapi() {
@@ -129,7 +132,6 @@ public class BaseFragment extends Fragment {
                 List<Result> tempArticles = results.getResponse().getResults();
                 mAdapter.addAll(tempArticles);
                 mLoadingIndicator.setVisibility(View.INVISIBLE);
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -143,4 +145,14 @@ public class BaseFragment extends Fragment {
     public String getSectionName() {
         return "";
     }
+
+    public Integer getPageNumber(boolean isRefreshed) {
+        if (isRefreshed) page = 1;
+        return page;
+    }
+
+    public void setPageNumber() {
+        this.page = 1;
+    }
+
 }
