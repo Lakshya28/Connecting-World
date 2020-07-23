@@ -1,7 +1,9 @@
 package com.example.connectingworld.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Html;
 import android.text.Spanned;
@@ -12,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.connectingworld.DataBaseHelper;
+import com.example.connectingworld.NewsData;
 import com.example.connectingworld.R;
 import com.example.connectingworld.Result;
 
@@ -30,9 +35,9 @@ import java.util.TimeZone;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
 
     private Context context;
-    private List<Result> newsData;
+    private List<NewsData> newsData;
 
-    public NewsAdapter(Context context, List<Result> data) {
+    public NewsAdapter(Context context, List<NewsData> data) {
         this.context = context;
         this.newsData = data;
     }
@@ -46,30 +51,30 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull viewholder holder, int position) {
-        final Result result = newsData.get(position);
-        final Spanned title = Html.fromHtml(Html.fromHtml(result.getWebTitle()).toString());
-        //final String title = result.getWebTitle().replaceAll("â[\\u0000-\\u0080]", " ");
+    public void onBindViewHolder(@NonNull final viewholder holder, int position) {
+        final NewsData result = newsData.get(position);
+        //final Spanned title = Html.fromHtml(Html.fromHtml(result.getWebTitle()).toString());
+        final String title = result.getTitle().replaceAll("â[\\u0000-\\u0080]", "'");
         holder.articleTitle.setText(title);
-        holder.articleTopic.setText(result.getSectionName());
-        holder.articleDate.setText(getTimeDifference(formatDate(result.getWebPublicationDate())));
-        if (result.getFields() == null || result.getFields().getThumbnail() == null) {
+        holder.articleTopic.setText(result.getSection());
+        holder.articleDate.setText(getTimeDifference(formatDate(result.getDate())));
+        if (result.getThumbnail() == null) {
             holder.articleImage.setVisibility(View.GONE);
         } else {
             holder.articleImage.setVisibility(View.VISIBLE);
-            Glide.with(holder.articleImage.getContext()).load(result.getFields().getThumbnail()).into(holder.articleImage);
+            Glide.with(holder.articleImage.getContext()).load(result.getThumbnail()).into(holder.articleImage);
         }
         holder.articleImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getWebUrl()));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getUrl()));
                 context.startActivity(browserIntent);
             }
         });
         holder.articleTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getWebUrl()));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(result.getUrl()));
                 context.startActivity(browserIntent);
             }
         });
@@ -80,8 +85,34 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
                 Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                        title + " : " + result.getWebUrl());
+                        title + " : " + result.getUrl());
                 context.startActivity(Intent.createChooser(sharingIntent, context.getString(R.string.share_article)));
+            }
+        });
+        final DataBaseHelper db = new DataBaseHelper(context);
+        if (db.searchData(result.getId())) {
+            holder.favouriteCard.setImageDrawable(context.getDrawable(R.drawable.ic_favourite_black));
+        } else {
+            holder.favouriteCard.setImageDrawable(context.getDrawable(R.drawable.ic_favourite));
+        }
+
+        holder.favouriteCard.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onClick(View view) {
+                if (!db.searchData(result.getId())) {
+                    boolean x = db.insertData(result.getId(), title, result.getUrl(), result.getThumbnail(), result.getSection(), result.getDate());
+                    if (x) {
+                        holder.favouriteCard.setImageDrawable(context.getDrawable(R.drawable.ic_favourite_black));
+                        Toast.makeText(context, "Added to Favourites", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Oops!, Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    db.deleteData(result.getId());
+                    holder.favouriteCard.setImageDrawable(context.getDrawable(R.drawable.ic_favourite));
+                    Toast.makeText(context, "Removed from Favourites", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -97,7 +128,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
         notifyDataSetChanged();
     }
 
-    public void addAll(List<Result> newsList) {
+    public void addAll(List<NewsData> newsList) {
         newsData.addAll(newsList);
         notifyDataSetChanged();
     }
@@ -177,4 +208,5 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.viewholder> {
         return DateUtils.getRelativeTimeSpanString(publicationTime, currentTime,
                 DateUtils.SECOND_IN_MILLIS);
     }
+
 }

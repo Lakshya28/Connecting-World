@@ -19,6 +19,8 @@
     <string name="ic_title_culture">Culture</string>
     <string name="ic_title_food">Food</string>
     <string name="ic_title_art_and_design">Art &amp; Design</string>
+    <string name="ic_title_fav">Favourites</string>
+
 
     <string name="ic_group_communicate">Communicate</string>
     <string name="share">Share App</string>

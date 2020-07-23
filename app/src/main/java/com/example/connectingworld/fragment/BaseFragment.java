@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.connectingworld.News;
+import com.example.connectingworld.NewsData;
 import com.example.connectingworld.NewsPreferences;
 import com.example.connectingworld.R;
 import com.example.connectingworld.Result;
@@ -76,7 +78,7 @@ public class BaseFragment extends Fragment {
 
         mLoadingIndicator = view.findViewById(R.id.loading_indicator);
 
-        mAdapter = new NewsAdapter(getActivity(), new ArrayList<Result>());
+        mAdapter = new NewsAdapter(getActivity(), new ArrayList<NewsData>());
 
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnScrollListener(OnScrollListener);
@@ -130,7 +132,8 @@ public class BaseFragment extends Fragment {
                 Gson gson = gsonBuilder.create();
                 News results = gson.fromJson(response, News.class);
                 List<Result> tempArticles = results.getResponse().getResults();
-                mAdapter.addAll(tempArticles);
+                List<NewsData> convertedData = convertToNewsData(tempArticles);
+                mAdapter.addAll(convertedData);
                 mLoadingIndicator.setVisibility(View.INVISIBLE);
             }
         }, new Response.ErrorListener() {
@@ -153,6 +156,17 @@ public class BaseFragment extends Fragment {
 
     public void setPageNumber() {
         this.page = 1;
+    }
+
+    public List<NewsData> convertToNewsData(List<Result> temp) {
+        List<NewsData> newsData = new ArrayList<>();
+        for (int i = 0; i < temp.size(); i++) {
+            Result y = temp.get(i);
+            String thumbnail = y.getFields() != null ? y.getFields().getThumbnail() : null;
+            NewsData x = new NewsData(y.getId(), y.getWebTitle(), y.getWebUrl(), thumbnail, y.getSectionName(), y.getWebPublicationDate());
+            newsData.add(x);
+        }
+        return newsData;
     }
 
 }
